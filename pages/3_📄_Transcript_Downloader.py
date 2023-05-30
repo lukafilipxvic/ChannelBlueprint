@@ -30,7 +30,7 @@ if st.button("Get Transcript"):
     col1, col2, col3 = st.columns([3,1,1], gap="small")
     # Download txt_transcript as a txt file
     col1.download_button(
-        label="Download Transcript as .txt file",
+        label="Download txt file",
         data=txt_transcript.encode('utf-8'),
         file_name="transcript.txt",
         mime="text/plain")
