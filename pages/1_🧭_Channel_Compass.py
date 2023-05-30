@@ -4,7 +4,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 
 st.set_page_config(
-    layout="centered",
+    layout="wide",
     page_title="Channel Compass",
     page_icon="🧭",
 )
