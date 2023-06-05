@@ -15,8 +15,8 @@ st.write("# Transcript Downloader 📄")
 # Type in video URL
 video_id = st.text_input("Enter Youtube video ID")
 
-if "https://" in video_id or "youtu" in video_id:
-    st.warning("Please enter video ID only")
+if "https://" in video_id or "youtu" in video_id or "www." in video_id:
+    st.warning("Please enter the video ID only")
 
 if st.button("Get Transcript"):
     transcript = YouTubeTranscriptApi.get_transcript(video_id)

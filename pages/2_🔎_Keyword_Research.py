@@ -31,7 +31,7 @@ tf_dict = {'Past hour': 'now 1-H', 'Past 4 hours': 'now 4-H', 'Past day': 'now 1
 gprop_options = list(gprop_dict.keys())
 gprop = st.selectbox('Select search area', gprop_options, index=4)
 tf_options = list(tf_dict.keys())
-timeframe = st.selectbox('Select timeframe', tf_options, index=6, )
+timeframe = st.selectbox('Select timeframe of search', tf_options, index=6, )
 
 # Modify gprop and timeframe based on the selected option
 gprop = gprop_dict[gprop]
