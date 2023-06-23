@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pytrends.request import TrendReq
+import scrapetube
 
 st.set_page_config(
     layout="wide",
@@ -28,29 +29,38 @@ if keywords_input:
         st.warning('Enter unique hobbies/interest')
     
     # Create an editable df to rank the hobbies by interest level
-    st.divider()
-    st.write("Assign an interest level to your hobbies/interest:")
     interests_df = pd.DataFrame({"interests": keywords, "interest_level": ""})
-    edited_interests_df = st.data_editor(interests_df, column_config={
-        "interests": st.column_config.Column("Interests/Hobbies", 
-        width="medium", required=True),
-        "interest_level": st.column_config.NumberColumn("Your rating",
-            help="What is your interest level in this topic?",
-            min_value=1, max_value=5, step=1, required=True),
-            }, disabled=["interests"], hide_index=True)
     st.divider()
 
-    # Add a button to the app
-    if st.button('Get Youtube search interest of your hobbies'):
-        # Make pytrends API request
-        pytrends.build_payload(keywords, gprop="youtube")
-        interest_over_time = pytrends.interest_over_time()
+    # Make pytrends API request
+    pytrends.build_payload(keywords, gprop="youtube")
+    interest_over_time = pytrends.interest_over_time()
 
-        # Remove the isPartial column
-        kw_interest_over_time = interest_over_time.drop(columns=['isPartial'])
+    # Remove the isPartial column
+    kw_interest_over_time = interest_over_time.drop(columns=['isPartial'])
 
-        # Display the results
-        if not interest_over_time.empty:
-            st.line_chart(kw_interest_over_time)
-        else:
-            st.write('No data available for the given keywords.')
+    # Display the results
+    if not interest_over_time.empty:
+        st.line_chart(kw_interest_over_time)
+    else:
+        st.write('No data available for the given keywords.')
+    
+        # Add a button to the app
+    kw = st.radio("Select an interest to search", options=interests_df["interests"].tolist())
+    
+    if st.button(f'Search Youtube videos for the keyword: {kw}'):
+        videos = scrapetube.get_search(kw, limit=10)
+        video_list = []
+        for video in videos:
+            video_dict = {}
+            video_dict['Title'] = video['title']['runs'][0]['text']
+            video_dict['Channel'] = video['longBylineText']['runs'][0]['text']
+            if 'simpleText' in video['viewCountText']:
+                video_dict['View Count'] = video['viewCountText']['simpleText']
+            else:
+                video_dict['View Count'] = 'Live'
+            video_dict['Thumbnail'] = video['thumbnail']['thumbnails'][0]['url']            
+            video_dict['url'] = f"https://www.youtube.com/watch?v={video['videoId']}"
+            video_list.append(video_dict)
+        video_df = pd.DataFrame(video_list)
+        st.dataframe(video_list, column_config={'Thumbnail': st.column_config.ImageColumn('Video Thumbnail')})
