@@ -1,3 +1,4 @@
 youtube-transcript-api
 pytrends
 scrapetube
+streamlit
