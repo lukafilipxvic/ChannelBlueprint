@@ -12,9 +12,16 @@ st.set_page_config(
 # Heading of App
 st.write("# Niche Finder 🎯")
 st.write("Haven't made your channel yet? Start by finding your Youtube niche.")
- 
+
+# Create header for Google Trend Request
+requests_args = {
+    'headers': {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    }
+}
+
  # Create pytrends instance
-pytrends = TrendReq()
+pytrends = TrendReq(requests_args=requests_args)
 
 # Get user to type in a number of hobbies in a single textbox
 keywords_input = st.text_input('Enter 5-8 interests/hobbies separated by commas to start finding your niche', "finance, coding, streamlit, photography, python")

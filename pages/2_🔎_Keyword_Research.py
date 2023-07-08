@@ -12,8 +12,15 @@ st.set_page_config(
 st.write("# Keyword Research 🔎")
 st.write('Enter a keyword to get search interest over time.')
 
-# Create pytrends instance
-pytrends = TrendReq()
+# Create header for Google Trend Request
+requests_args = {
+    'headers': {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    }
+}
+
+ # Create pytrends instance
+pytrends = TrendReq(requests_args=requests_args)
 
 # Get user input
 keywords_input = st.text_input('Enter up to 5 keywords separated by commas to get Youtube search interest over time.', 'chatgpt, finance, ice baths')
